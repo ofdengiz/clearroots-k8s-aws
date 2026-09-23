@@ -1,0 +1,4 @@
+# The bootstrap scripts are delivered as EC2 user-data and run by bash on
+# Ubuntu. A CRLF checkout on Windows would break the shebang and every
+# heredoc terminator, so line endings are pinned for the whole tree.
+* text=auto eol=lf

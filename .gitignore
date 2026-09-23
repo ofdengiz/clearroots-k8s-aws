@@ -1,0 +1,30 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Backend config holds an account-specific bucket; the state it points at
+# holds node addresses and kubeadm join material.
+backend.hcl
+
+# Variable files may carry a hosted zone id or account-specific values.
+terraform.tfvars
+*.auto.tfvars
+
+# Keys and credentials — never.
+*.pem
+*.key
+*.p12
+*.pfx
+*.csv
+.env
+.env.*
+credentials
+kubeconfig
+*.kubeconfig

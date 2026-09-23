@@ -1,0 +1,8 @@
+# Copy to backend.hcl and fill in your own values, then:
+#   terraform init -backend-config=backend.hcl
+#
+# backend.hcl is gitignored: the bucket name is account-specific and the
+# state file it points at contains node IPs and the kubeadm join material.
+bucket = "your-terraform-state-bucket"
+key    = "clearroots/terraform.tfstate"
+region = "us-east-1"

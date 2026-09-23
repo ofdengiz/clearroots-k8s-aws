@@ -1,0 +1,7 @@
+.terraform
+.git
+backend.hcl
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+*.pem

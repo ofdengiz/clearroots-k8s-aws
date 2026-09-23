@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ClearRoots Foundation public site delivered through AWS, Kubernetes, Docker, Route 53, and automated HTTPS.">
+  <title>ClearRoots Foundation</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div>
+        <p class="kicker">Mission-led public web delivery</p>
+        <div class="brand-row">
+          <span class="brand-mark">CR</span>
+          <div>
+            <h1 class="brand-name">ClearRoots Foundation</h1>
+            <p class="brand-subtitle">A public-facing platform for environmental education, outreach, and dependable cloud delivery.</p>
+          </div>
+        </div>
+      </div>
+      <div class="status-pill">Public HTTPS enabled</div>
+    </header>
+
+    <main>
+      <section class="hero-grid">
+        <div class="hero-copy card">
+          <p class="eyebrow">Environmental education | Sustainable farming | Secure cloud delivery</p>
+          <h2>A public platform for grassroots environmental education and sustainable farming.</h2>
+          <p class="lead">
+            ClearRoots Foundation presents a mission-focused public presence while keeping the delivery stack lean,
+            supportable, and easy to rebuild. The site is packaged as a lightweight container workload and published
+            through a controlled AWS path so the message stays clear without tying public availability to the internal environment.
+          </p>
+          <div class="cta-row">
+            <a class="button button-primary" href="#architecture">View delivery path</a>
+            <a class="button button-secondary" href="#operations">Read support profile</a>
+          </div>
+          <div class="stack-strip">
+            <span>AWS EC2</span>
+            <span>Route 53</span>
+            <span>Caddy HTTPS</span>
+            <span>Kubernetes</span>
+            <span>Docker</span>
+          </div>
+        </div>
+
+        <aside class="hero-visual card" aria-label="ClearRoots mission artwork and public delivery summary">
+          <div class="visual-topline">Published campaign visual</div>
+          <div class="art-frame">
+            <div class="visual-badge">Bundled vector asset</div>
+            <img
+              class="artwork-image"
+              src="assets/hero-fallback.svg"
+              alt="ClearRoots Foundation artwork highlighting grassroots environmental education and sustainable farming"
+            >
+          </div>
+          <div class="visual-caption">
+            The visual layer now matches the organization story more directly, while the delivery path behind it remains deliberately simple:
+            Route 53, Caddy, a Kubernetes service, and two web pods.
+          </div>
+        </aside>
+      </section>
+
+      <section class="metric-grid" aria-label="Service highlights">
+        <article class="metric card">
+          <span class="metric-value">2</span>
+          <h3>Web replicas</h3>
+          <p>Two pods keep public delivery aligned with the cluster design while avoiding unnecessary platform weight.</p>
+        </article>
+        <article class="metric card">
+          <span class="metric-value">443</span>
+          <h3>Public HTTPS edge</h3>
+          <p>Caddy terminates TLS at the worker and automatically renews certificates for the public domain.</p>
+        </article>
+        <article class="metric card">
+          <span class="metric-value">30080</span>
+          <h3>Service bridge</h3>
+          <p>Public traffic lands at the worker edge and is forwarded into Kubernetes through a single NodePort path.</p>
+        </article>
+        <article class="metric card">
+          <span class="metric-value">300</span>
+          <h3>DNS TTL</h3>
+          <p>Route 53 keeps the public record stable while still allowing controlled recovery if the worker address changes.</p>
+        </article>
+      </section>
+
+      <section class="section-block card" id="architecture">
+        <div class="section-heading">
+          <p class="eyebrow">Delivery chain</p>
+          <h2>From public DNS lookup to rendered mission page</h2>
+        </div>
+        <div class="path-grid">
+          <article>
+            <strong>Route 53</strong>
+            <p>The public domain resolves to the worker Elastic IP through a single A record.</p>
+          </article>
+          <article>
+            <strong>AWS worker</strong>
+            <p>The worker node owns the stable public address and serves as the only public entry point.</p>
+          </article>
+          <article>
+            <strong>Caddy</strong>
+            <p>HTTPS is terminated at the edge and proxied locally to the Kubernetes service path.</p>
+          </article>
+          <article>
+            <strong>NodePort service</strong>
+            <p>The service abstraction keeps traffic pointed at Kubernetes rather than at individual pods.</p>
+          </article>
+          <article>
+            <strong>clearroots-web pods</strong>
+            <p>Two nginx-based replicas publish the static site content as a lightweight container workload.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="two-column">
+        <article class="section-block card" id="operations">
+          <div class="section-heading">
+            <p class="eyebrow">Operational profile</p>
+            <h2>Designed to stay clear under support pressure</h2>
+          </div>
+          <p>
+            This package remains intentionally small: a static site, a container image, a Kubernetes deployment,
+            a NodePort service, a Caddy edge, and a Route 53 record. That keeps troubleshooting direct.
+            If the domain resolves, the worker answers on 443, and the pods are healthy, the service is healthy.
+          </p>
+          <p>
+            The mission-facing presentation can evolve without changing the infrastructure model. Updating the hero image
+            or page copy does not require redesigning the public path, which keeps content work and platform work cleanly separated.
+          </p>
+        </article>
+
+        <article class="section-block card">
+          <div class="section-heading">
+            <p class="eyebrow">Delivery summary</p>
+            <h2>Low-cost architecture with a more credible front door</h2>
+          </div>
+          <ul class="detail-list">
+            <li>Terraform provisions the EC2 nodes, IAM profile, Elastic IP, security group, and Route 53 record.</li>
+            <li>The worker is the only public node, which keeps the entry surface narrow and predictable.</li>
+            <li>Docker packages the site separately from the infrastructure so presentation updates do not require redesigning the platform.</li>
+            <li>The bundled hero image now gives the public site a stronger first impression while still shipping as a simple static payload.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>ClearRoots Foundation &copy; 2026</span>
+      <span>clearroots.omerdengiz.com</span>
+      <span>AWS | Terraform | Kubernetes | Docker | Route 53 | Caddy</span>
+    </footer>
+  </div>
+</body>
+</html>
