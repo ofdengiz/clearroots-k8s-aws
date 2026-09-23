@@ -17,7 +17,7 @@ backend.hcl
 terraform.tfvars
 *.auto.tfvars
 
-# Keys and credentials — never.
+# Keys and credentials. Never.
 *.pem
 *.key
 *.p12

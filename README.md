@@ -1,4 +1,4 @@
-# ClearRoots — public HTTPS service on a Terraform-provisioned Kubernetes cluster
+# ClearRoots: public HTTPS service on a Terraform-provisioned Kubernetes cluster
 
 Infrastructure-as-code for a small, self-contained public web service: two EC2
 nodes bootstrapped into a `kubeadm` cluster, a containerised site running as a
@@ -8,8 +8,9 @@ Route 53 record.
 This was the cloud half of a two-site managed-service environment built for the
 Algonquin College Computer Systems Technician – Networking capstone
 (Jan – Apr 2026). ClearRoots was one of two simulated client tenants. The
-cloud site — design, build and operation — was solo work; the on-premises site
-was delivered collaboratively and is not part of this repository.
+cloud site, including design, build and operation, was solo work. The
+on-premises site was delivered collaboratively and is not part of this
+repository.
 
 ---
 
@@ -23,7 +24,7 @@ was delivered collaboratively and is not part of this repository.
                          Elastic IP
                               │
    ┌──────────────────────────▼──────────────────────────┐
-   │  worker node — t3.micro, Ubuntu 22.04               │
+   │  worker node: t3.micro, Ubuntu 22.04                │
    │                                                     │
    │    Caddy :80/:443   TLS terminated + auto-renewed   │
    │         │                                           │
@@ -35,7 +36,7 @@ was delivered collaboratively and is not part of this repository.
    └─────────────────────────────────────────────────────┘
                               │ 6443
    ┌──────────────────────────▼──────────────────────────┐
-   │  master node — control plane, Flannel CNI           │
+   │  master node: control plane, Flannel CNI            │
    │  no public DNS record, no inbound path from the web │
    └─────────────────────────────────────────────────────┘
 ```
@@ -43,7 +44,7 @@ was delivered collaboratively and is not part of this repository.
 | File | Role |
 | --- | --- |
 | `main.tf` | EC2 instances, Elastic IP, IAM role/profile, security group |
-| `variables.tf` | Inputs — region, AMI, instance type, domain, image, zone ID |
+| `variables.tf` | Inputs: region, AMI, instance type, domain, image, zone ID |
 | `route53.tf` | Public A record pointing at the worker's Elastic IP |
 | `outputs.tf` | Node addresses, site URL, ready-to-paste SSH commands |
 | `s3.tf` | Note on why the state bucket is not managed here |
@@ -70,7 +71,7 @@ pulls the token and CA hash, and joins. Nothing persistent is stored anywhere.
 Terraform already orders the nodes: `worker`'s user-data interpolates
 `aws_instance.master.id` and `.private_ip`, which is an implicit dependency.
 The explicit `depends_on` only states it for a reader. Neither helps with the
-dependency that actually matters — the master *existing* is not the master
+dependency that actually matters. The master *existing* is not the master
 *being ready*, and a worker that boots faster than the control plane will fail
 its join. That is handled where it belongs, in `worker.sh`, which polls
 `kubectl get nodes` until the master reports `Ready` and retries token
@@ -92,7 +93,7 @@ to the NodePort on loopback.
 **The state bucket is created by hand.**
 Terraform cannot create the bucket that holds its own state on the first run.
 Rather than hide that with a bootstrap module, the bucket is made once
-manually and `backend.hcl` points at it — see `s3.tf`.
+manually and `backend.hcl` points at it. See `s3.tf`.
 
 ---
 
@@ -146,4 +147,4 @@ an earlier repository.
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
