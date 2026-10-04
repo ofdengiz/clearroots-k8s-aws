@@ -5,10 +5,11 @@ nodes bootstrapped into a `kubeadm` cluster, a containerised site running as a
 NodePort-backed Deployment, and Caddy terminating TLS at the edge behind a
 Route 53 record.
 
-It is the cloud site of a two-site hybrid managed-service environment, built
-for the Algonquin College capstone (Jan – Apr 2026) for ClearRoots, one of two
-client organizations. The cloud site was designed, built and operated end to
-end; the on-premises site was delivered with the team.
+It is the AWS extension of Site 2 in a two-site hybrid managed-service
+environment, built for the Algonquin College capstone (Jan – Apr 2026) for
+ClearRoots, one of two client organizations. Site 2 and this extension were
+designed, built and operated end to end; Site 1, the on-premises site, was
+delivered with the team.
 
 ---
 
