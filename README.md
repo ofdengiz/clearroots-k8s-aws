@@ -5,12 +5,10 @@ nodes bootstrapped into a `kubeadm` cluster, a containerised site running as a
 NodePort-backed Deployment, and Caddy terminating TLS at the edge behind a
 Route 53 record.
 
-This was the cloud half of a two-site managed-service environment built for the
-Algonquin College Computer Systems Technician – Networking capstone
-(Jan – Apr 2026). ClearRoots was one of two simulated client tenants. The
-cloud site, including design, build and operation, was solo work. The
-on-premises site was delivered collaboratively and is not part of this
-repository.
+It is the cloud site of a two-site hybrid managed-service environment, built
+for the Algonquin College capstone (Jan – Apr 2026) for ClearRoots, one of two
+client organizations. The cloud site was designed, built and operated end to
+end; the on-premises site was delivered with the team.
 
 ---
 
@@ -56,7 +54,7 @@ repository.
 
 ---
 
-## Decisions worth explaining
+## Design decisions
 
 **The worker joins the cluster without a distributed SSH key.**
 A worker needs the `kubeadm` join token, and the token can only be minted on
@@ -75,9 +73,7 @@ dependency that actually matters. The master *existing* is not the master
 *being ready*, and a worker that boots faster than the control plane will fail
 its join. That is handled where it belongs, in `worker.sh`, which polls
 `kubectl get nodes` until the master reports `Ready` and retries token
-retrieval until it returns something. This was the failure that cost the most
-time to diagnose: a `terraform apply` that succeeded while the cluster had one
-node in it.
+retrieval until it returns something.
 
 **Only the worker gets an Elastic IP.**
 The public A record has to be stable, and the worker is the only public entry
@@ -92,12 +88,19 @@ to the NodePort on loopback.
 
 **The state bucket is created by hand.**
 Terraform cannot create the bucket that holds its own state on the first run.
-Rather than hide that with a bootstrap module, the bucket is made once
-manually and `backend.hcl` points at it. See `s3.tf`.
+The bucket is made once, `backend.hcl` points at it, and `s3.tf` records
+the step.
+
+**Sized for a demonstration.**
+Both nodes are `t3.micro`, below the `kubeadm` minimum of 2 CPUs and 2 GB, so
+the bootstrap passes `--ignore-preflight-errors=All`. A production build would
+use larger nodes, a highly available control plane or EKS, an `aws_ami` data
+source instead of the pinned `us-east-1` image, and a CI pipeline for the
+image.
 
 ---
 
-## Running it
+## Deploy
 
 Prerequisites: an AWS account, a Route 53 hosted zone you control, an EC2 key
 pair, an S3 bucket for state, and a container image built from `site/`.
@@ -123,27 +126,6 @@ Security group ingress: `22` (SSH), `80`/`443` (public HTTPS), `6443`
 (Kubernetes API), and all traffic from the group to itself for pod networking.
 
 ---
-
-## Known limits
-
-This was built to a course budget and reads that way in places, which is worth
-stating plainly rather than leaving for a reviewer to find:
-
-- **`t3.micro` is below the `kubeadm` minimum** of 2 CPUs and 2 GB, so both
-  bootstrap scripts pass `--ignore-preflight-errors=All`. It runs, but it is
-  not a sizing anyone should copy.
-- **Single control plane, single worker.** No HA, and losing the worker takes
-  the site down until the Elastic IP is re-associated.
-- **The AMI is pinned to a `us-east-1` Ubuntu 22.04 image ID.** Another region
-  needs a different one, or an `aws_ami` data source.
-- **No CI.** Images were built and pushed by hand.
-
-## Not in this repository
-
-The EC2 private key, the Terraform state backend configuration, and the
-coursework documents and team deliverables that surrounded the project. The
-history here starts at the published state of the code; it is not a rewrite of
-an earlier repository.
 
 ## Licence
 
